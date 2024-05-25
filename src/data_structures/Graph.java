@@ -1,9 +1,14 @@
 /*
-*       This project is created by Akın Tatar
+*       This project is created by Akın Tatar , Ozan Ergüleç , Seher Oğuz
 *       Project structure is containing several graph necessity constraints
 *       and other required methods to be used in other algorithms
 *       bfs and dfs is implemented
 *       print function is also provided for some console testing
+*
+*       calculateEccentricity,
+*       calculateDiameter,
+*       calculateRadius
+*       methods are implemented
 *
 *
 *
@@ -13,10 +18,7 @@
 
 package data_structures;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 public class Graph {
     private ArrayList<Vertex> vertices;
@@ -78,6 +80,8 @@ public class Graph {
     public boolean isDirected() {
         return isDirected;
     }
+
+    // DFS IMPLEMENTATION
     public void dfs(Vertex start, Set<Vertex> visited){
         //recursive
         //look for all the neighbours
@@ -92,6 +96,7 @@ public class Graph {
 
         }
     }
+    // BFS IMPLEMENTATION
     public void bfs(Vertex start){
         ArrayList<Vertex> visited = new ArrayList<>();
         Queue<Vertex> queue = new LinkedList<>();
@@ -109,4 +114,48 @@ public class Graph {
             }
         }
     }
+
+    // ALL THREE DISTRIBUTED ALGORITHMS ARE IMPLEMENTED
+    //
+    // 1 - CALCULATE ECCENTRICITY FOR A GIVEN NODE AS A PARAMETER
+    public int calculateEccentricity(Vertex node) {
+        Map<Vertex, Integer> distances = new HashMap<>();
+        Queue<Vertex> queue = new LinkedList<>();
+        queue.offer(node);
+        distances.put(node, 0);
+
+        while (!queue.isEmpty()) {
+            Vertex current = queue.poll();
+            for (Edge e : current.getEdges()) {
+                if (!distances.containsKey(e.getDestination())) {
+                    queue.offer(e.getDestination());
+                    distances.put(e.getDestination(), distances.get(current) + 1);
+                }
+            }
+        }
+
+        return Collections.max(distances.values());
+    }
+
+    // 2 - CALCULATE DIAMETER FOR A GIVEN GRAPH AS A PARAMETER
+    public int calculateDiameter() {
+        int maxEccentricity = 0;
+        for (Vertex v : vertices) {
+            int ecc = calculateEccentricity(v);
+            maxEccentricity = Math.max(maxEccentricity, ecc);
+        }
+        return maxEccentricity;
+    }
+
+    // 3 - CALCULATE RADIUS FOR A GIVEN GRAPH AS A PARAMETER
+    public int calculateRadius() {
+        int minEccentricity = Integer.MAX_VALUE;
+        for (Vertex v : vertices) {
+            int ecc = calculateEccentricity(v);
+            minEccentricity = Math.min(minEccentricity, ecc);
+        }
+        return minEccentricity;
+    }
+
+
 }
