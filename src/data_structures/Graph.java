@@ -138,9 +138,9 @@ public class Graph {
     }
 
     // 2 - CALCULATE DIAMETER FOR A GIVEN GRAPH AS A PARAMETER
-    public int calculateDiameter() {
+    public int calculateDiameter(Graph G) {
         int maxEccentricity = 0;
-        for (Vertex v : vertices) {
+        for (Vertex v : G.vertices) {
             int ecc = calculateEccentricity(v);
             maxEccentricity = Math.max(maxEccentricity, ecc);
         }
@@ -148,9 +148,9 @@ public class Graph {
     }
 
     // 3 - CALCULATE RADIUS FOR A GIVEN GRAPH AS A PARAMETER
-    public int calculateRadius() {
+    public int calculateRadius(Graph G) {
         int minEccentricity = Integer.MAX_VALUE;
-        for (Vertex v : vertices) {
+        for (Vertex v : G.vertices) {
             int ecc = calculateEccentricity(v);
             minEccentricity = Math.min(minEccentricity, ecc);
         }
